@@ -1,11 +1,11 @@
-import React from "react";
-import ProductBill from "./ProductBill";
-import { useDispatch, useSelector } from "react-redux";
+import React from 'react';
+import ProductBill from './ProductBill';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   incrementProductCount,
   decrementProductCount,
   removeProduct,
-} from "../redux/action/productAction";
+} from '../redux/action/productAction';
 
 function ProductCart() {
   const dispatch = useDispatch();
@@ -21,15 +21,15 @@ function ProductCart() {
   let isCheeseFree = false;
 
   const soup = productDetails?.find(
-    (product) => product.product_name.toUpperCase() === "SOUP"
+    (product) => product.product_name.toUpperCase() === 'SOUP'
   );
 
   const bread = productDetails?.find(
-    (product) => product.product_name.toUpperCase() === "BREAD"
+    (product) => product.product_name.toUpperCase() === 'BREAD'
   );
 
   const butter = productDetails?.find(
-    (product) => product.product_name.toUpperCase() === "BUTTER"
+    (product) => product.product_name.toUpperCase() === 'BUTTER'
   );
 
   if (soup && bread?.product_count >= 2 && !butter) {
@@ -45,7 +45,7 @@ function ProductCart() {
   }
 
   const cheese = productDetails?.find(
-    (product) => product.product_name.toUpperCase() === "CHEESE"
+    (product) => product.product_name.toUpperCase() === 'CHEESE'
   );
 
   if (cheese?.product_count === 3) {
@@ -83,89 +83,94 @@ function ProductCart() {
   };
 
   return (
-    <div className="flex flex-col container bg-gray-300 rounded-md p-3 ml-4 md:w-full">
-      <h1 className="font-bold text-center mb-3">Cart</h1>
-      <hr className="border-1 w-full" />
+    <div className='flex flex-col container bg-gray-300 rounded-md p-3 ml-4 md:w-full'>
+      <h1 className='font-bold text-center mb-3'>Cart</h1>
+      <hr className='border-1 w-full' />
       {productDetails.map((product) => (
         <div key={product.id}>
-          <div className="flex flex-row items-center justify-between p-3">
+          <div className='flex flex-row items-center justify-between p-3'>
             <div>{product.product_name}</div>
             <div>$ {product.price}</div>
-            <div className="flex flex-row justify-between items-center">
+            <div className='flex flex-row justify-between items-center'>
               <button
                 onClick={() => decrementCount(product.id)}
                 disabled={product.product_count === 1}
-                className="bg-gradient-to-r from-blue-900 to-blue-400 rounded-full py-1 px-1 my-1 text-lg text-white hover:bg-blue-400 hover:from-blue-500 hover:to-blue-600 flex flex-row justify-center w-12 outline-none"
+                className='bg-gradient-to-r from-blue-900 to-blue-400 rounded-full py-1 px-1 my-1 text-lg text-white hover:bg-blue-400 hover:from-blue-500 hover:to-blue-600 flex flex-row justify-center w-12 outline-none'
+                style={
+                  product.product_count === 1
+                    ? { background: '#8080809e', cursor: 'not-allowed' }
+                    : {}
+                }
               >
                 -
               </button>
-              <p className="mr-4 ml-4">{product.product_count}</p>
+              <p className='mr-4 ml-4'>{product.product_count}</p>
               <button
                 onClick={() => incrementCount(product.id)}
-                className="bg-gradient-to-r from-blue-900 to-blue-400 rounded-full py-2 px-2 my-2 text-sm text-white hover:bg-blue-400 hover:from-blue-500 hover:to-blue-600 flex flex-row justify-center w-12 outline-none"
+                className='bg-gradient-to-r from-blue-900 to-blue-400 rounded-full py-2 px-2 my-2 text-sm text-white hover:bg-blue-400 hover:from-blue-500 hover:to-blue-600 flex flex-row justify-center w-12 outline-none'
               >
                 +
               </button>
               <div
-                className="ml-4 cursor-pointer"
+                className='ml-4 cursor-pointer'
                 onClick={() => removeProductFromCart(product.id)}
               >
                 <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  className="h-6 w-6"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
+                  xmlns='http://www.w3.org/2000/svg'
+                  className='h-6 w-6'
+                  fill='none'
+                  viewBox='0 0 24 24'
+                  stroke='currentColor'
                 >
                   <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth="2"
-                    d="M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z"
+                    strokeLinecap='round'
+                    strokeLinejoin='round'
+                    strokeWidth='2'
+                    d='M10 14l2-2m0 0l2-2m-2 2l-2-2m2 2l2 2m7-2a9 9 0 11-18 0 9 9 0 0118 0z'
                   />
                 </svg>
               </div>
             </div>
           </div>
-          <hr className="border-1 w-full" />
-          <div className="flex flex-row-reverse font-bold text-gray-600">
-            Item price £ {product.price.toFixed(2)} *{product.product_count} = £{" "}
+          <hr className='border-1 w-full' />
+          <div className='flex flex-row-reverse font-bold text-gray-600'>
+            Item price £ {product.price.toFixed(2)} *{product.product_count} = £{' '}
             {(product.price * product.product_count).toFixed(2)}
           </div>
-          <hr className="border-1 w-full" />
-          <div className="flex flex-row-reverse font-bold text-gray-600">
-            Item cost £{" "}
+          <hr className='border-1 w-full' />
+          <div className='flex flex-row-reverse font-bold text-gray-600'>
+            Item cost £{' '}
             {(
               product.price * product.product_count -
-              (product.product_name.toUpperCase() === "BREAD" && breadSavings
+              (product.product_name.toUpperCase() === 'BREAD' && breadSavings
                 ? breadSavings
-                : product.product_name.toUpperCase() === "BUTTER" &&
+                : product.product_name.toUpperCase() === 'BUTTER' &&
                   butterSavings
                 ? butterSavings
-                : product.product_name.toUpperCase() === "CHEESE" &&
+                : product.product_name.toUpperCase() === 'CHEESE' &&
                   isCheeseFree
                 ? cheeseSavings
                 : 0)
             ).toFixed(2)}
           </div>
-          <hr className="border-1 w-full" />
+          <hr className='border-1 w-full' />
 
           <div>
-            <div className="flex flex-row-reverse text-red-500">
-              {product.product_name.toUpperCase() === "BREAD" && breadSavings
-                ? "Savings " + breadSavings.toFixed(2)
-                : product.product_name.toUpperCase() === "BUTTER" &&
+            <div className='flex flex-row-reverse text-red-500'>
+              {product.product_name.toUpperCase() === 'BREAD' && breadSavings
+                ? 'Savings ' + breadSavings.toFixed(2)
+                : product.product_name.toUpperCase() === 'BUTTER' &&
                   butterSavings
-                ? "Savings " + butterSavings.toFixed(2)
-                : product.product_name.toUpperCase() === "CHEESE" &&
+                ? 'Savings ' + butterSavings.toFixed(2)
+                : product.product_name.toUpperCase() === 'CHEESE' &&
                   isCheeseFree
-                ? "Free Cheese Qty " +
+                ? 'Free Cheese Qty ' +
                   freeCheeseCount +
-                  " piece & Savings " +
+                  ' piece & Savings ' +
                   cheeseSavings.toFixed(2)
                 : null}
             </div>
-            <hr className="border-1 w-full" />
+            <hr className='border-1 w-full' />
           </div>
         </div>
       ))}
