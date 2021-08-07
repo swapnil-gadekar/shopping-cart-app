@@ -19,6 +19,7 @@ function ProductCart() {
   let cheeseSavings = 0;
   let freeCheeseCount = 0;
   let isCheeseFree = false;
+  let freeButterCount = 0;
 
   const soup = productDetails?.find(
     (product) => product.product_name.toUpperCase() === 'SOUP'
@@ -32,21 +33,24 @@ function ProductCart() {
     (product) => product.product_name.toUpperCase() === 'BUTTER'
   );
 
-  if (soup && bread?.product_count >= 2 && !butter) {
-    breadSavings = bread?.price;
-    savings += breadSavings;
-  } else if (soup && bread?.product_count >= 2 && butter) {
-    breadSavings = bread?.price;
-    butterSavings = butter?.price;
-    savings += breadSavings + butterSavings;
-  } else if (soup && butter && !bread) {
-    butterSavings = butter?.price;
-    savings += butterSavings;
-  }
-
   const cheese = productDetails?.find(
     (product) => product.product_name.toUpperCase() === 'CHEESE'
   );
+
+  if (butter?.product_count % 2 === 0) {
+    freeButterCount = butter?.product_count / 2;
+    butterSavings = butter?.price * freeButterCount;
+    savings += butterSavings;
+  } else if (butter?.product_count > 2 && butter?.product_count % 2 === 1) {
+    freeButterCount = parseInt(butter?.product_count / 2);
+    butterSavings = butter?.price * freeButterCount;
+    savings += butterSavings;
+  }
+
+  if (soup && bread?.product_count >= 1) {
+    breadSavings = (bread?.price * bread?.product_count) / 2;
+    savings += breadSavings;
+  }
 
   if (cheese?.product_count === 3) {
     isCheeseFree = true;
@@ -158,15 +162,18 @@ function ProductCart() {
           <div>
             <div className='flex flex-row-reverse text-red-500'>
               {product.product_name.toUpperCase() === 'BREAD' && breadSavings
-                ? 'Savings ' + breadSavings.toFixed(2)
+                ? 'Discount ' + breadSavings.toFixed(2)
                 : product.product_name.toUpperCase() === 'BUTTER' &&
-                  butterSavings
-                ? 'Savings ' + butterSavings.toFixed(2)
+                  freeButterCount > 0
+                ? 'Free Butter Qty ' +
+                  freeButterCount +
+                  ' piece & Discount ' +
+                  butterSavings.toFixed(2)
                 : product.product_name.toUpperCase() === 'CHEESE' &&
                   isCheeseFree
                 ? 'Free Cheese Qty ' +
                   freeCheeseCount +
-                  ' piece & Savings ' +
+                  ' piece & Discount ' +
                   cheeseSavings.toFixed(2)
                 : null}
             </div>
